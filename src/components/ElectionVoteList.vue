@@ -11,16 +11,16 @@
     <table>
         <thead>
             <tr>
-            <th style="width:20px;"></th>
-            <th style="width:20px;">Partido</th>
-            <th style="width:20px;">Votos</th>
-            <th style="width:20px;">Escaños</th>
+            <th>Partido</th>
+            <th></th>
+            <th>Votos</th>
+            <th>Escaños</th>
             </tr>
         </thead>
         <tbody>
         <tr v-for="resultado in resultados" :key="resultado.siglas">
+            <td class="name" :title="resultado.siglas">{{ resultado.siglas }}</td>
             <td :style="{ background: resultado.color, width: '20px' }"></td>
-            <td>{{ resultado.siglas }}</td>
             <td>{{ resultado.votos | parseInt }}</td>
             <td>{{ resultado.escanos | parseInt}}</td>
         </tr>
@@ -31,6 +31,7 @@
 
 <script>
 import ElectionService from '/services/Election.service';
+import { EventBus } from '/event-bus.js';
 const electionService = new ElectionService();
 
 export default {
@@ -41,14 +42,9 @@ export default {
         }
     },
     mounted() {
-        console.log("he sido montado");
-        electionService.get()
-            .then(data => { 
-                console.log(data);
-                this.info = data.resultados.shift();
-                this.resultados = data.resultados
-                    .filter(resultado => parseInt(resultado.escanos) > 0);
-            });
+        this.updateResults('current');
+
+        EventBus.$on('election:set', this.updateResults);
     },
     filters: {
         parsePercent: function(value) {
@@ -56,6 +52,17 @@ export default {
         },
         parseInt: function(value) {
             return parseInt(value);
+        }
+    },
+    methods: {
+        updateResults: function (election) {
+            electionService.get(election)
+                .then(data => { 
+                    console.log(data);
+                    this.info = data.resultados.shift();
+                    this.resultados = data.resultados
+                        .filter(resultado => parseInt(resultado.escanos) > 0);
+                });
         }
     }
 }
@@ -67,6 +74,15 @@ export default {
         /* background: silver;
         color: white; */
         padding: 20px;
+    }
+    table {
+        width: 100%;
+    }
+    .name {
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        max-width: 130px;
     }
     td {
         text-align: right;

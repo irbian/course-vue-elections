@@ -28,4 +28,7 @@ export default {
 
         border: 1px solid black;
     }
+    * { 
+        box-sizing: border-box;
+        };
 </style>
