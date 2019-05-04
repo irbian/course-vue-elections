@@ -76,4 +76,4 @@ module.exports=require("./lib/axios");
 },{"/components/ElectionSelector":"IeRk","/components/ElectionVoteList":"Yp6Y"}],"Focm":[function(require,module,exports) {
 "use strict";var e=r(require("vue/dist/vue.esm")),u=r(require("./App.vue"));function r(e){return e&&e.__esModule?e:{default:e}}new e.default({render:function(e){return e(u.default)}}).$mount("#app");
 },{"vue/dist/vue.esm":"fAfE","./App.vue":"Js2s"}]},{},["Focm"], "global")
-//# sourceMappingURL=/src.e0899286.js.map
+//# sourceMappingURL=/course-vue-elections/src.e0899286.js.map
